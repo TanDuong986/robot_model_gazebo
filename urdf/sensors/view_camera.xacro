@@ -2,7 +2,7 @@
 <robot name="view_camera_sensor" xmlns:xacro="http://www.ros.org/wiki/xacro">
   <xacro:macro name="view_camera_sensor" params="parent">
   <joint name="view_camera_joint" type="continuous">
-      <origin xyz="0 0 6" rpy="0 1.570796 0"/>	
+      <origin xyz="0 0 0" rpy="0 1.570796 0"/>	
       <parent link="${parent}"/>
       <child link="view_camera_link" />
       <!-- use the following line and type="continuous" to fix the angle of the view camera -->

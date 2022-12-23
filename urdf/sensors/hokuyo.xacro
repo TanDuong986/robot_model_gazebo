@@ -1,9 +1,6 @@
 <?xml version="1.0"?>
 <robot name="hokuyo_sensor" xmlns:xacro="http://www.ros.org/wiki/xacro">
- <!-- 
- <xacro:include filename="$(find turtlebot_description)/urdf/turtlebot_gazebo.urdf.xacro"/>
- <xacro:include filename="$(find turtlebot_description)/urdf/turtlebot_properties.urdf.xacro"/>
- -->
+
  <xacro:macro name="hokuyo_sensor" params="parent">
      <link name="laser">
    <collision>
@@ -15,7 +12,7 @@
    <visual>
      <origin xyz="0 0 0" rpy="0 0 0"/>
      <geometry>
-       <mesh filename="package://robot_model_gazebo/meshes/sensors/hokuyo.dae"/>
+       <mesh filename="package://deliver_rb/meshes/hokuyo.dae"/>
      </geometry>
    </visual>
    <inertial>
@@ -26,10 +23,11 @@
  </link>
  <joint name="laser_joint" type="fixed">
    <axis xyz="0 0 0" />
-   <origin xyz="0.168 0 0.06" rpy="0 0 0"/>
+   <origin xyz="-0.2 0.0 0.06" rpy="0 0 3.14"/>
    <parent link="${parent}"/>
    <child link="laser"/>
  </joint>
  </xacro:macro>
+
   </robot>
 

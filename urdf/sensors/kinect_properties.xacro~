@@ -23,11 +23,11 @@
      (currently in development and awaiting feedback)
    -->
 	<property name="M_PI" value="3.1415926535897932384626433832795 " />
-	<!--
+	
 	<property name="cam_px" value="-0.087" />
 	<property name="cam_py" value="-0.0125" />
 	<property name="cam_pz" value="0.2870" />
-	-->
+	
 	<property name="cam_px" value="0.028" />
 	<property name="cam_py" value="-0.0125" />
 	<property name="cam_pz" value="0.075" />

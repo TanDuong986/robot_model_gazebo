@@ -8,24 +8,24 @@
 
 	<!-- KINECT ATTACHMENT -->
 	<xacro:include filename="$(find robot_model_gazebo)/urdf/sensors/kinect.xacro"/>
-	<kinect_sensor parent="kinect_base_link">
+	<xacro:kinect_sensor parent="head_pan_link">
 		<!--origin xyz="0 0 0" rpy="0 0 0" /-->
-	</kinect_sensor>
+	</xacro:kinect_sensor>
 	
 	<!-- LASER ATTACHMENT -->
 	<xacro:include filename="$(find robot_model_gazebo)/urdf/sensors/hokuyo.xacro"/>
-	<hokuyo_sensor parent="upper_base_link">
+	<xacro:hokuyo_sensor parent="upper_base_link">
 		<!--origin xyz="0 0 0" rpy="0 0 0" /-->
-	</hokuyo_sensor>
+	</xacro:hokuyo_sensor>
 	
 	<!-- Import all Gazebo-customization elements, including Gazebo colors, sensors, controller -->
   	<xacro:include filename="$(find robot_model_gazebo)/urdf/robot_model_gazebo.gazebo" />
 	
 	<!-- Add view camera - working -->
 	<xacro:include filename="$(find robot_model_gazebo)/urdf/sensors/view_camera.xacro" />
-	<view_camera_sensor parent="kinect_base_link">
+	<xacro:view_camera_sensor parent="head_pan_link">
 		<!--origin xyz="0 0 0" rpy="0 0 0" /-->
-	</view_camera_sensor>	
+	</xacro:view_camera_sensor>	
 	
 	
 	<xacro:property name="length_wheel" value="0.075" />
@@ -86,7 +86,7 @@
 	</gazebo>
 
 	<joint name="base_footprint_joint" type="fixed">
-		<origin xyz="0 0 0" />
+		<origin xyz="0 0 0" rpy="0 0 3.14"/>
 		<parent link="base_footprint" />
 		<child link="base_link" />
 	</joint>
@@ -325,7 +325,7 @@
 	</link>
 	
 	<link name="head_pan_link">
-		<visual>
+		<!-- <visual>
 			<origin xyz="0 0 ${height_head_pan/2}" rpy="0 0 0"/>
 			<geometry>
 				<box size="0.05 0.045 ${height_head_pan}"/>
@@ -333,7 +333,7 @@
 			<material name="Green1">
 				<color rgba="0 1 0 1.0"/>
 			</material>
-		</visual>
+		</visual> -->
 		<collision>
 			<origin xyz="0 0 ${height_head_pan/2}" rpy="0 0 0"/>
 			<geometry>
@@ -343,46 +343,9 @@
 		<xacro:default_inertia mass="0.125"/>
 	</link>
 	
-	<link name="head_tilt_link">
-		<visual>
-			<origin xyz="0 0 ${height_head_tilt/2}" rpy="0 0 0"/>
-			<geometry>
-				<box size="0.03 0.038 ${height_head_tilt}"/>
-			</geometry>
-			<material name="Green1">
-				<color rgba="0 1 0 1.0"/>
-			</material>
-		</visual>
-		<collision>
-			<origin xyz="0 0 ${height_head_tilt/2}" rpy="0 0 0"/>
-			<geometry>
-       				<box size="0.03 0.038 ${height_head_tilt}"/>
-			</geometry>
-		</collision>
-		<xacro:default_inertia mass="0.125"/>
-	</link>
-
-	<link name="kinect_base_link">
-		<visual>
-			<origin xyz="0 0 ${length_base/2}" rpy="0 0 0"/>
-			<geometry>
-				<box size="0.06 0.065 ${length_base}"/>
-			</geometry>
-			<material name="Green3">
-				<color rgba="0.1 0.5 0.1 1.0"/>
-			</material>
-		</visual>
-		<collision>
-			<geometry>
-       				<box size="0.06 0.065 ${length_base}"/>
-			</geometry>
-		</collision>
-		<xacro:default_inertia mass="0.125"/>
-	</link>
-
 	<link name="screen_link">
 		<visual>
-			<origin xyz="0.06 0 -0.11" rpy="0 -0.5 0"/>
+			<origin xyz="0.06 0 -0.11" rpy="0 0.5 3.14"/>
 			<geometry>
 				<box size="0.01 0.3 0.16"/>
 			</geometry>
@@ -391,7 +354,7 @@
 		</material>
 		</visual>
 		<collision>
-			<origin xyz="0.06 0 -0.11" rpy="0 -0.5 0"/>
+			<origin xyz="0.06 0 -0.11" rpy="0 0.5 3.14"/>
 			<geometry>
        				<box size="0.01 0.3 0.16"/>
 			</geometry>
@@ -409,7 +372,7 @@
  </joint>
 
  <joint name="base_to_wheel2" type="continuous">
-   <axis xyz="0 0 1" />
+   <axis xyz="0 0 -1" />
    <anchor xyz="0 0 0" />
    <limit effort="100" velocity="100" />
    <parent link="base_link"/>
@@ -427,7 +390,7 @@
 
  <joint name="base_to_wheel4" type="continuous">
    <parent link="base_link"/>
-   <axis xyz="0 0 1" />
+   <axis xyz="0 0 -1" />
    <child link="wheel_4"/>
    <origin rpy="-1.5707 0 0" xyz="0 0.195 0"/>
  </joint>
@@ -475,24 +438,10 @@
 		<origin xyz="0 0 ${length_base}" rpy="0 0 0"/>
 	</joint>
 
-	<joint name="head_pan_joint" type="fixed">
-		<parent link="head_pan_link"/>
-		<child link="head_tilt_link"/>
-		<origin xyz="0 0 ${height_head_pan}" rpy="0 0 0"/>
-	
-	</joint>
-
-	<joint name="kinect_base_joint" type="fixed">
-		<parent link="head_tilt_link"/>
-		<child link="kinect_base_link"/>
-		<origin xyz="0 0 ${height_head_tilt}" rpy="0 0 0"/>
-	
-	</joint>
-
 	<joint name="screen_joint" type="fixed">
-		<parent link="top_torso_link"/>
+		<parent link="head_pan_link"/>
 		<child link="screen_link"/>
-		<origin xyz="0 0 0.025" rpy="0 0 0"/>
+		<origin xyz="0 0 0.025" rpy="0 0 3.14"/>
 	</joint>
 
 
